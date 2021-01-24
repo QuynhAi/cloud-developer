@@ -1,6 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import {filterImageFromURL, deleteLocalFiles} from './util/util';
+import { isMainThread } from 'worker_threads';
 
 (async () => {
 
@@ -28,7 +29,17 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   //   the filtered image file [!!TIP res.sendFile(filteredpath); might be useful]
 
   /**************************************************************************** */
-
+  // http://localhost:8082/filteredimage?image_url=https://upload.wikimedia.org/wikipedia/commons/b/bd/Golden_tabby_and_white_kitten_n01.jpg
+  app.get( "/filteredimage/", async ( req, res ) => {
+    let {image_url} = req.query;
+    if(!image_url){
+      return res.status(400).send("image url is required");
+    }
+    let filteredpath = await filterImageFromURL(image_url);
+    return res.status(200).sendFile(filteredpath, function(){
+      deleteLocalFiles([filteredpath]);
+    });
+  } );
   //! END @TODO1
   
   // Root Endpoint

@@ -30,6 +30,7 @@ import { isMainThread } from 'worker_threads';
 
   /**************************************************************************** */
   // http://localhost:8082/filteredimage?image_url=https://upload.wikimedia.org/wikipedia/commons/b/bd/Golden_tabby_and_white_kitten_n01.jpg
+  // http://udacity-image-filter-dev.us-west-2.elasticbeanstalk.com/filteredimage?image_url=https://upload.wikimedia.org/wikipedia/commons/b/bd/Golden_tabby_and_white_kitten_n01.jpg
   app.get( "/filteredimage/", async ( req, res ) => {
     let {image_url} = req.query;
     if(!image_url){
